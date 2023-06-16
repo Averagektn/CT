@@ -1,0 +1,55 @@
+%option noyywrap
+%{
+    int new_line = 1;
+    FILE *out;
+%}
+%%
+#{1,6}		{ if (new_line){		      
+			new_line = 0;	
+			fprintf(out, "#\n");		    
+		 }  		  		
+	  	}
+
+={3,}|-{3,}	{ if (new_line) {
+			new_line = 0;
+			fprintf(out, "line\n");
+		 }	
+		}	
+	
+[>]		{ if (new_line){
+			new_line = 0;
+	 		fprintf(out, ">\n");	
+	 	 }
+		}
+	
+[+*]		{ if (new_line) {
+			new_line = 0;
+	  		fprintf(out, "marked\n");
+	  	 }
+		}
+
+[[:digit:]+ .]	{if (new_line){
+			new_line = 0;
+			fprintf(out, "num.\n");
+		 }
+		}
+		
+!?"[".+"]("[[:alnum:]\20]+	fprintf(out, "link\n");
+
+")"		fprintf(out, ")\n");
+	
+[\t|"    "]+	{ if(new_line) {
+			new_line = 0;
+	 		fprintf(out, "code\n");
+	 	 }
+	 	}
+	
+[\n]		new_line = 1;	
+
+.
+%%
+int main(){
+	yyin = fopen("markdown","r");
+	out  = fopen("output.txt", "w");
+    	yylex();
+}

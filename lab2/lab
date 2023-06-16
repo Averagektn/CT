@@ -1,0 +1,16 @@
+%option noyywrap
+%pointer
+%{
+    int shift = 0;
+    const int BORDER_LOW = 'z' - 'a' + 1;
+    const int BORDER_HIGH = 'Z' - 'A' + 1;
+%}
+%%
+[a-z]	    printf("%c", 'a' + (*yytext + shift - 'a') % BORDER_LOW);
+[A-Z]	    printf("%c", 'A' + (*yytext + shift - 'A') % BORDER_HIGH);
+%%
+int main(){
+    printf("Enter shift:");
+    scanf("%d", &shift);
+    yylex();
+}

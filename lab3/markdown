@@ -1,0 +1,20 @@
+# HEADER 1
+## HEADER 2 ##
++LIST_elem
++list_elem
++a
+*a
+*b
+HEADER
+====
+1. A
+2. B
+3. c
+4. d
+5.E
+6.E
+>random quote
+	int x = 0; 
+		return x;
+[link](path)
+![pic](path
